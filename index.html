@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>document.getElementsByTagName("html")[0].className += " js";</script>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <title>Pérolas do Bolsonaro</title>
+    
+</head>
+<body onload="cargaInicial()">
+
+<div class="top-container texto">
+  <h1>Pérolas do Bolsonaro</h1>
+  <!-- <img src="img/perola.svg" alt="Picture" style="transform: translate(0px, -760px) scale(0.025);"> -->
+  <p>Declarações do nosso Presidente entre Março/2020 e Março/2021 sobre a pandemia de Covid-19</p>
+</div>
+
+<div class="header texto" id="cabecalho" style="z-index: 100;">
+    <span style="color: black;">Casos: </span><span style="color:#75cd65;" id="rotuloCasos"></span> <span style="color: black;"> / 12.000.000</span>
+    <div class="progress-container">
+        <div class="progress-bar-casos" id="barraCasos"></div>
+    </div>
+
+    <br>
+
+    <span style="color: black;" >Mortes: </span><span style="color: #792a93;" id="rotuloMortes"></span> <span style="color: black;"> / 12.000.000</span>
+    <div class="progress-container">
+        <div class="progress-bar-mortes" id="barraMortes"></div>
+    </div>
+
+</div>
+
+<div class="content" style="z-index: 200;">
+    <section class="content cd-timeline js-cd-timeline" style="background-color: white;"> 
+    <div id="div-pai-conteudo" class="container max-width-lg cd-timeline__container">
+    </div>
+  </section>
+ </div>
+
+    <script src="js/main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script>
+        window.onscroll = function() {
+            fixaCabecalho();
+            isInViewport();
+            calculaBarraProgresso();
+        };
+    </script>
+
+</body>
+</html>
