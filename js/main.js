@@ -114,8 +114,7 @@ function addBloco(order, casos, mortes, texto, dataFormatada, url, posicao) {
 			<p>
 			<p id="text-` + order + `" class="color-contrast-medium texto-balao">"` + texto + `"</p>
 			<div id="data-` + order + `" class="flex-start justify-between items-center">
-
-					<a id="link-data-` + order + `" href="` + url + `" class="btn btn--subtle texto-balao" style="margin-left: 400px" target="_blank">Leia mais</a>
+				<a id="link-data-` + order + `" href="` + url + `" class="btn btn--subtle texto-balao" target="_blank">Leia mais</a>
 			</div>
 		</div>`;
 
