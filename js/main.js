@@ -99,12 +99,12 @@ function addBloco(order, casos, mortes, texto, dataFormatada, url, posicao) {
 	if(posicao % 2 == 0) {
 	codigoHtml = 
 		`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-			<img src="img/bolsonaro-faixa.svg" alt="Picture" style="transform: scale(7);">
+			<img src="img/bolsonaro-faixa.svg" alt="Picture" style="transform: scale(7) translateX(-10%); z-index: 200;">
 		</div>`;
 	} else {
 		codigoHtml = 
 		`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-			<img src="img/bolsonaro_mascara.svg" alt="Picture" style="transform: scale(7) rotateY(180deg);">
+			<img src="img/bolsonaro_mascara.svg" alt="Picture" style="transform: scale(7) rotateY(180deg) translateX(10%); z-index: 200;">
 		</div>`;
 	}
 		
@@ -114,8 +114,7 @@ function addBloco(order, casos, mortes, texto, dataFormatada, url, posicao) {
 			<p>
 			<p id="text-` + order + `" class="color-contrast-medium texto-balao">"` + texto + `"</p>
 			<div id="data-` + order + `" class="flex-start justify-between items-center">
-
-					<a id="link-data-` + order + `" href="` + url + `" class="btn btn--subtle texto-balao" style="margin-left: 400px" target="_blank">Leia mais</a>
+				<a id="link-data-` + order + `" href="` + url + `" class="btn btn--subtle texto-balao" target="_blank">Leia mais</a>
 			</div>
 		</div>`;
 
