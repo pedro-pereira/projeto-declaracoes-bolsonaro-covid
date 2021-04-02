@@ -51,7 +51,7 @@
 }
 
 .cd-timeline__img--picture {
-  background-color: white;
+  background-color: transparent;
 }
 
 .cd-timeline__img {
@@ -120,10 +120,6 @@
 
 #subtitulo {
   font-family: Montserrat-Light;
-}
-
-.a {
-  margin-left: 380px;
 }
 
 .rodape-container {
