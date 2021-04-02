@@ -99,12 +99,12 @@ function addBloco(order, casos, mortes, texto, dataFormatada, url, posicao) {
 	if(posicao % 2 == 0) {
 	codigoHtml = 
 		`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-			<img src="img/bolsonaro-faixa.svg" alt="Picture" style="transform: scale(7);">
+			<img src="img/bolsonaro-faixa.svg" alt="Picture" style="transform: scale(7) translateX(-10%); z-index: 200;">
 		</div>`;
 	} else {
 		codigoHtml = 
 		`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-			<img src="img/bolsonaro_mascara.svg" alt="Picture" style="transform: scale(7) rotateY(180deg);">
+			<img src="img/bolsonaro_mascara.svg" alt="Picture" style="transform: scale(7) rotateY(180deg) translateX(10%); z-index: 200;">
 		</div>`;
 	}
 		
