@@ -89,46 +89,72 @@ function loadJSON(callback, vetor) {
 	xobj.send(null);
 };
 
-function addBloco(order, casos, mortes, texto, dataFormatada, url) {
+function addBloco(order, casos, mortes, texto, dataFormatada, url, posicao) {
 	const div = this.document.createElement('div');
+	var codigoHtml = "";
 
 	div.className = 'cd-timeline__block';
-	
 	div.id = order;
 
-	div.innerHTML =
+	if(posicao % 2 == 0) {
+	codigoHtml = 
 		`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-			<img src="img/perola.svg" alt="Picture" style="transform: scale(2.5);">
-        </div>
-
-        <div id="content-` + order + `" class="cd-timeline__content text-component cd-timeline__content--hidden" style="background-color: #F3FAF8">
-			<p id= "text-` + order + `" class="color-contrast-medium texto">"` + texto + `"</p>
-
+			<img src="img/bolsonaro-faixa.svg" alt="Picture" style="transform: scale(7);">
+		</div>`;
+	} else {
+		codigoHtml = 
+		`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
+			<img src="img/bolsonaro_mascara.svg" alt="Picture" style="transform: scale(7) rotateY(180deg);">
+		</div>`;
+	}
+		
+	codigoHtml = codigoHtml +
+		`<div id="content-` + order + `" class="cd-timeline__content text-component cd-timeline__content--hidden" style="background-color: #F3FAF8;">
+			<span id="titulo-` + order + `" class="data-formatada">` + dataFormatada + `</span>
+			<p>
+			<p id="text-` + order + `" class="color-contrast-medium texto-balao">"` + texto + `"</p>
 			<div id="data-` + order + `" class="flex-start justify-between items-center">
-			    
-				<span id="span-data-` + order + `" class="cd-timeline__date texto">` + dataFormatada + ` <br> <br>
-				Casos: <span style="color:#75cd65;">` + formatNumber(casos) + `</span><br> Mortes: <span style="color: #792a93;">` + formatNumber(mortes) + `</span>
-				</span>
 
-				<a id="link-data-` + order + `" href="` + url + `" class="btn btn--subtle texto">Leia mais</a>
-				
-				<div style="text-align: right; margin-left: 80%; margin-top: -50px"><img src="img/bolsonaro.png"></div>
-
+					<a id="link-data-` + order + `" href="` + url + `" class="btn btn--subtle texto-balao" style="margin-left: 400px" target="_blank">Leia mais</a>
 			</div>
 		</div>`;
+
+	div.innerHTML = codigoHtml;
+
+	//Casos: <span style="color:#75cd65;">` + formatNumber(casos) + `</span><br> Mortes: <span style="color: #792a93;">` + formatNumber(mortes) + `</span> (linha 116)
+        
 	// <div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture">
 	// <div id="content-` + order + `" class="cd-timeline__content text-component">
 	// <h2 id="titulo-` + order + `"> Casos: ` + casos + ` Mortes: ` + mortes + `</h2> (linha 106)
+	// <div style="text-align: right; margin-left: 80%; margin-top: -50px"><img src="img/bolsonaro.png"></div> (linha 115)
+
+	//<span id="span-data-` + order + `" class="cd-timeline__date texto-balao">` + dataFormatada + ` <br> <br>
+	//</span>
 
 	return div;
 };
 
 function cargaInicial() {
 	loadJSON(function (json) {
+		var i = 0;
 		json.forEach(element => {
+
+			element['text'] = replaceAll(element['text'], "hidroxicloroquina", (`<span class="texto-chave">` + `hidroxicloroquina` + `</span>`));
+			element['text'] = replaceAll(element['text'], "cloroquina", (`<span class="texto-chave">` + `cloroquina` + `</span>`));
+			element['text'] = replaceAll(element['text'], "gripezinha", (`<span class="texto-chave">` + `gripezinha` + `</span>`));
+			element['text'] = replaceAll(element['text'], "coronavírus", (`<span class="texto-chave">` + `coronavírus` + `</span>`));
+			element['text'] = replaceAll(element['text'], "vírus", (`<span class="texto-chave">` + `vírus` + `</span>`));
+			element['text'] = replaceAll(element['text'], "coveiro", (`<span class="texto-chave">` + `coveiro` + `</span>`));
+			element['text'] = replaceAll(element['text'], "porra", (`<span class="texto-chave">` + `porra` + `</span>`));
+			element['text'] = replaceAll(element['text'], "UTI", (`<span class="texto-chave">` + `UTI` + `</span>`));
+			element['text'] = replaceAll(element['text'], "mortes", (`<span class="texto-chave">` + `mortes` + `</span>`));
+			element['text'] = replaceAll(element['text'], "pandemia", (`<span class="texto-chave">` + `pandemia` + `</span>`));
+			element['text'] = replaceAll(element['text'], "Eu não errei nenhuma desde Março do ano passado.", (`<span class="texto-chave">` + `Eu não errei nenhuma desde Março do ano passado.` + `</span>`));
+
 			document.getElementById("div-pai-conteudo").appendChild(
-				addBloco(element['order'], element['cases'], element['deaths'], element['text'], element['formattedDate'], element['url'])
+				addBloco(element['order'], element['cases'], element['deaths'], element['text'], element['formattedDate'], element['url'], i)
 			);
+			i = i + 1;
 			dados.push(JSON.parse(`{ "order":"` + element['order'] + `" , "cases":"` + element['cases'] + `", "deaths":"` + element['deaths'] + `" }`));
 		});
 	});
@@ -210,10 +236,15 @@ function calculaBarraProgresso(casos, mortes) {
 	var scrolled = (casos / 12000000) * 100;
 	document.getElementById("barraCasos").style.width = scrolled + "%";
 
-	scrolled = (mortes / 12000000) * 100;
+	scrolled = (mortes / 300000) * 100;
 	document.getElementById("barraMortes").style.width = scrolled + "%";
 }
 
 function formatNumber(num) {
 	return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+}
+
+
+function replaceAll(string, search, replace) {
+	return string.split(search).join(replace);
 }

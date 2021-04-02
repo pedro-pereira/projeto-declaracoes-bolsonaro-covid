@@ -8,38 +8,49 @@
 
   <link rel="stylesheet" href="css/style.css">
 
-  <title>Pérolas do Bolsonaro</title>
+  <title>As declarações de um ... em tempos de pandemia</title>
     
 </head>
 <body onload="cargaInicial()">
 
 <div class="top-container texto">
-  <h1>Pérolas do Bolsonaro</h1>
-  <!-- <img src="img/perola.svg" alt="Picture" style="transform: translate(0px, -760px) scale(0.025);"> -->
-  <p>Declarações do nosso Presidente entre Março/2020 e Março/2021 sobre a pandemia de Covid-19</p>
+  <br>
+  <h1 id="titulo">As declarações de um ... em tempos de pandemia</h1>
+  <br>
+  <p id="subtitulo">Falas do Presidente do Brasil, entre Março/2020 e Março/2021, sobre a pandemia de Covid-19.</p>
 </div>
 
-<div class="header texto" id="cabecalho" style="z-index: 100;">
-    <span style="color: black;">Casos: </span><span style="color:#75cd65;" id="rotuloCasos"></span> <span style="color: black;"> / 12.000.000</span>
+<div class="header texto-legenda" id="cabecalho" style="z-index: 100;">
+    <span style="color: black; font-weight: bold;">Infectados: </span><span style="color:#153131;" id="rotuloCasos"></span> <span style="color: black;"> / 12.000.000</span>
     <div class="progress-container">
         <div class="progress-bar-casos" id="barraCasos"></div>
     </div>
 
     <br>
 
-    <span style="color: black;" >Mortes: </span><span style="color: #792a93;" id="rotuloMortes"></span> <span style="color: black;"> / 12.000.000</span>
+    <span style="color: black;" >Mortes: </span><span class="texto-legenda" style="color: #D00000;" id="rotuloMortes"></span> <span style="color: black;"> / 300.000</span>
     <div class="progress-container">
         <div class="progress-bar-mortes" id="barraMortes"></div>
     </div>
 
 </div>
 
-<div class="content" style="z-index: 200;">
-    <section class="content cd-timeline js-cd-timeline" style="background-color: white;"> 
+<div class="content" style="z-index: 200; padding: 0px;">
+    <section class="content cd-timeline js-cd-timeline" 
+             style="background-image: url(img/bandeira-brasil.svg); background-repeat: no-repeat; background-size: cover;"> 
     <div id="div-pai-conteudo" class="container max-width-lg cd-timeline__container">
     </div>
   </section>
  </div>
+
+ <div class="rodape-container texto">
+  <br>
+  <p id="subtitulo">
+      Universidade Federal do Ceará <br>
+      Sistemas e Mídias Digitais - Disciplina: Comunicação Visual II - 2020.2 <br>
+      Jefferson Jalles / Morgana Araújo / Pedro Henrique / Thaís Lúcio
+  </p>
+</div>
 
     <script src="js/main.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
