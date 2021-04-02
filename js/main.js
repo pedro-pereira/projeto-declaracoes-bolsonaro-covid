@@ -1,7 +1,6 @@
 var dados = [];
 let totalMortes = 0;
 let totalCasos = 0;
-
 (function(){
 
   // Vertical Timeline - by CodyHouse.co
@@ -11,7 +10,27 @@ let totalCasos = 0;
 		this.images   = this.element.getElementsByClassName("cd-timeline__img");
 		this.contents = this.element.getElementsByClassName("cd-timeline__content");
 		this.offset   = 0.8;
-		this.hideBlocks();
+		this.hideBlocks();		
+	};
+	
+	// Iniciar com duas cargas de informação - @jeff
+	VerticalTimeline.prototype.showFirst = function(){
+		if ( !"classList" in document.documentElement ) {
+			return; // no animation on older browsers
+		}
+		
+		var self = this;
+		for( var i = 0; i < 2; i++) {
+			(function(i){
+				if(self.contents[i].classList.contains("cd-timeline__content--hidden")) {
+					self.contents[i].classList.add("cd-timeline__content--bounce-in");
+					self.contents[i].classList.remove("cd-timeline__content--hidden");
+					self.images[i].classList.add("cd-timeline__img--bounce-in");
+					self.images[i].classList.remove("cd-timeline__img--hidden");
+				}
+			})(i);
+		}
+
 	};
 
 	VerticalTimeline.prototype.hideBlocks = function() {
@@ -23,8 +42,7 @@ let totalCasos = 0;
 		var self = this;
 		for( var i = 0; i < this.blocks.length; i++) {
 			(function(i){
-				
-				if( self.blocks[i].getBoundingClientRect().top > window.innerHeight * self.offset ) {
+				 if( self.blocks[i].getBoundingClientRect().top > window.innerHeight * self.offset ) {
 					self.images[i].classList.add("cd-timeline__img--hidden"); 
 					self.contents[i].classList.add("cd-timeline__content--hidden"); 
 				}
@@ -37,6 +55,8 @@ let totalCasos = 0;
 			return;
 		}
 		var self = this;
+		console.log(this.blocks.length);
+
 		for( var i = 0; i < this.blocks.length; i++) {
 			(function(i){
 				if(self.contents[i].classList.contains("cd-timeline__content--hidden") 
@@ -62,12 +82,15 @@ let totalCasos = 0;
 		}
 
 		//show timeline blocks on scrolling
-		window.addEventListener("scroll", function(event) {
-			if( !scrolling ) {
-				scrolling = true;
-				(!window.requestAnimationFrame) ? setTimeout(checkTimelineScroll, 250) : window.requestAnimationFrame(checkTimelineScroll);
-			}
-		});
+		window.addEventListener("scroll", scrollEvent);
+		window.addEventListener('BlocosAdicionados', startTimeline); // Evento para quando os blocos forem adicionados 
+	}
+
+	function scrollEvent(event){
+		if( !scrolling ) {
+			scrolling = true;
+			(!window.requestAnimationFrame) ? setTimeout(checkTimelineScroll, 250) : window.requestAnimationFrame(checkTimelineScroll);
+		}
 	}
 
 	function checkTimelineScroll() {
@@ -76,6 +99,12 @@ let totalCasos = 0;
 		});
 		scrolling = false;
 	};
+
+	function startTimeline(){ // Mostrar os primeiros itens da timeline
+		verticalTimelinesArray.forEach(function(timeline){
+			timeline.showFirst();
+		});
+	}
 
 })();
 
@@ -196,13 +225,18 @@ function cargaInicial() {
 			dados.push(JSON.parse(`{ "order":"` + element['order'] + `" , "cases":"` + element['cases'] + `", "deaths":"` + element['deaths'] + `" }`));
 		});
 	});
+
+	setTimeout(BlocosAdicionados, 250); // Fazer a chamada de evento de mostrar os primeiros blocos 
+}
+
+function BlocosAdicionados(){	// Di
+	window.dispatchEvent(new Event('BlocosAdicionados'));
 }
 
 // Teste de visibilidade
 function isInViewport() {
 
 	var blocos = document.getElementsByClassName("cd-timeline__block");
-
 	for (let index = 0; index < blocos.length; index++) {
 		const element = blocos[index];
 
@@ -220,7 +254,7 @@ function isInViewport() {
 			qtdCasos = qtdCasos.toLocaleString('pt-BR');
 			
 			calculaBarraProgresso(qtdCasos, qtdMortes);
-
+			
 			document.getElementById("rotuloCasos").innerText = formatNumber(qtdCasos);
 			document.getElementById("rotuloMortes").innerText = formatNumber(qtdMortes);
 			document.getElementById("rotuloTotalCasos").innerText = formatNumber(totalCasos);
