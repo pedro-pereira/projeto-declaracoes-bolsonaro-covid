@@ -1,4 +1,6 @@
 var dados = [];
+let totalMortes = 0;
+let totalCasos = 0;
 
 (function(){
 
@@ -95,18 +97,51 @@ function addBloco(order, casos, mortes, texto, dataFormatada, url, posicao) {
 
 	div.className = 'cd-timeline__block';
 	div.id = order;
-
-	if(posicao % 2 == 0) {
-	codigoHtml = 
-		`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-			<img src="img/bolsonaro-faixa.svg" alt="Picture" style="transform: scale(7) translateX(-10%); z-index: 200;">
-		</div>`;
-	} else {
-		codigoHtml = 
-		`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-			<img src="img/bolsonaro_mascara.svg" alt="Picture" style="transform: scale(7) rotateY(180deg) translateX(10%); z-index: 200;">
-		</div>`;
+	
+	let rotateValue = 0; let transform = 0;
+	if(posicao % 2 == 0){
+		rotateValue = 0;
+		transform = 1;
 	}
+	else {
+		rotateValue = 180;
+		transform = -1;
+	}
+
+	// TODO: QUando padronizar imagens, corrigir aqui
+	switch(posicao % 3){
+		case 0: 
+			codigoHtml = 
+			`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
+				<img src="img/bolsonaro-faixa.svg" alt="Picture" style="transform: scale(7) translateX(` + (-10 * transform) + `%) rotateY(`+ rotateValue + `deg); z-index: 200;">
+			</div>`; 
+		break; 
+		
+		case 1:  
+		codigoHtml =
+		`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
+			<img src="img/bolsonaro_mascara.svg" alt="Picture" style="transform: scale(7) rotateY(`+ rotateValue + `deg) translateX(10%); z-index: 200;">
+		</div>`;
+		break;
+		
+		case 2:  
+		codigoHtml =
+			`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
+				<img src="img/bolsonaro-faixa_pb.svg" alt="Picture" style="transform: scale(7) rotateY(`+ rotateValue + `deg) translateX(` + (-10 * transform) + `%); z-index: 200;">
+			</div>`;
+		break;
+	}
+	// if(posicao % 2 == 0) {
+	// codigoHtml = 
+	// 	`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
+	// 		<img src="img/bolsonaro-faixa.svg" alt="Picture" style="transform: scale(7) translateX(-10%); z-index: 200;">
+	// 	</div>`;
+	// } else {
+	// 	codigoHtml = 
+	// 	`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
+	// 		<img src="img/bolsonaro_mascara.svg" alt="Picture" style="transform: scale(7) rotateY(180deg) translateX(10%); z-index: 200;">
+	// 	</div>`;
+	// }
 		
 	codigoHtml = codigoHtml +
 		`<div id="content-` + order + `" class="cd-timeline__content text-component cd-timeline__content--hidden" style="background-color: #F3FAF8;">
@@ -136,6 +171,10 @@ function addBloco(order, casos, mortes, texto, dataFormatada, url, posicao) {
 function cargaInicial() {
 	loadJSON(function (json) {
 		var i = 0;
+
+		totalCasos = json[json.length - 1].cases;
+		totalMortes = json[json.length - 1].deaths;
+
 		json.forEach(element => {
 
 			element['text'] = replaceAll(element['text'], "hidroxicloroquina", (`<span class="texto-chave">` + `hidroxicloroquina` + `</span>`));
@@ -184,6 +223,8 @@ function isInViewport() {
 
 			document.getElementById("rotuloCasos").innerText = formatNumber(qtdCasos);
 			document.getElementById("rotuloMortes").innerText = formatNumber(qtdMortes);
+			document.getElementById("rotuloTotalCasos").innerText = formatNumber(totalCasos);
+			document.getElementById("rotuloTotalMortes").innerText = formatNumber(totalMortes);
 		}
 	}
 }
@@ -232,10 +273,10 @@ function calculaBarraProgresso(casos, mortes) {
 	var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
 	var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
-	var scrolled = (casos / 12000000) * 100;
+	var scrolled = (casos / totalCasos) * 100;
 	document.getElementById("barraCasos").style.width = scrolled + "%";
 
-	scrolled = (mortes / 300000) * 100;
+	scrolled = (mortes / totalMortes) * 100;
 	document.getElementById("barraMortes").style.width = scrolled + "%";
 }
 
