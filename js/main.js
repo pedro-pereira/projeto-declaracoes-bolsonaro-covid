@@ -127,51 +127,22 @@ function addBloco(order, casos, mortes, texto, dataFormatada, url, posicao) {
 	div.className = 'cd-timeline__block';
 	div.id = order;
 	
-	let rotateValue = 0; let transform = 0;
-	if(posicao % 2 == 0){
-		rotateValue = 0;
-		transform = 1;
-	}
-	else {
-		rotateValue = 180;
-		transform = -1;
-	}
+	let rotateValue = posicao % 2 == 0 ? 0 : 180; 
+	let pictureFileName = "";
 
 	// TODO: QUando padronizar imagens, corrigir aqui
 	switch(posicao % 3){
-		case 0: 
-			codigoHtml = 
-			`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-				<img src="img/bolsonaro-faixa.svg" alt="Picture" style="transform: scale(7) translateX(` + (-10 * transform) + `%) rotateY(`+ rotateValue + `deg); z-index: 200;">
-			</div>`; 
-		break; 
-		
-		case 1:  
-		codigoHtml =
-		`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-			<img src="img/bolsonaro_mascara.svg" alt="Picture" style="transform: scale(7) rotateY(`+ rotateValue + `deg) translateX(10%); z-index: 200;">
-		</div>`;
-		break;
-		
-		case 2:  
-		codigoHtml =
-			`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-				<img src="img/bolsonaro-faixa_pb.svg" alt="Picture" style="transform: scale(7) rotateY(`+ rotateValue + `deg) translateX(` + (-10 * transform) + `%); z-index: 200;">
-			</div>`;
-		break;
+		case 0: pictureFileName = "bolsonaro-faixa.svg"; break;
+		case 1:	pictureFileName = "bolsonaro_mascara.svg"; break;
+		case 2:	pictureFileName = "bolsonaro-grito.svg"; break;
 	}
-	// if(posicao % 2 == 0) {
-	// codigoHtml = 
-	// 	`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-	// 		<img src="img/bolsonaro-faixa.svg" alt="Picture" style="transform: scale(7) translateX(-10%); z-index: 200;">
-	// 	</div>`;
-	// } else {
-	// 	codigoHtml = 
-	// 	`<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-	// 		<img src="img/bolsonaro_mascara.svg" alt="Picture" style="transform: scale(7) rotateY(180deg) translateX(10%); z-index: 200;">
-	// 	</div>`;
-	// }
-		
+
+	// Imagem bolsonaro
+	codigoHtml = `<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
+			<img src="img/` + pictureFileName + `" alt="Picture" style="transform: scale(7) rotateY(`+ rotateValue + `deg); z-index: 200;">
+		</div>`;
+	
+	// Conteudo card
 	codigoHtml = codigoHtml +
 		`<div id="content-` + order + `" class="cd-timeline__content text-component cd-timeline__content--hidden" style="background-color: #F3FAF8;">
 			<span id="titulo-` + order + `" class="data-formatada">` + dataFormatada + `</span>
