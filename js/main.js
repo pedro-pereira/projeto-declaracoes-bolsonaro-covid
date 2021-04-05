@@ -1,6 +1,9 @@
 var dados = [];
 let totalMortes = 0;
 let totalCasos = 0;
+let qtdCasos = 0;
+let qtdMortes = 0;
+
 (function(){
 
   // Vertical Timeline - by CodyHouse.co
@@ -128,18 +131,29 @@ function addBloco(order, casos, mortes, texto, dataFormatada, url, posicao) {
 	div.id = order;
 	
 	let rotateValue = posicao % 2 == 0 ? 0 : 180; 
+	let translate = 0;
 	let pictureFileName = "";
 
 	// TODO: QUando padronizar imagens, corrigir aqui
 	switch(posicao % 3){
-		case 0: pictureFileName = "bolsonaro-faixa.svg"; break;
-		case 1:	pictureFileName = "bolsonaro_mascara.svg"; break;
-		case 2:	pictureFileName = "bolsonaro-grito.svg"; break;
+		case 0: pictureFileName = "bozo_faixa.svg"; 	break;
+		case 1:	pictureFileName = "bozo_mascara.svg"; 	break;
+		case 2:	pictureFileName = "bozo_grito.svg"; 	break;
 	}
+
+	// GAMBIARRA 
+	switch(posicao % 6){
+		case 0: translate = 15; break;
+		case 1: translate = 3; break;
+		case 2: translate = 18; break;
+		case 4: translate = 12; break;
+		case 5: translate = -5; break;
+	}
+
 
 	// Imagem bolsonaro
 	codigoHtml = `<div id = "picture-` + order + `" class="cd-timeline__img cd-timeline__img--picture cd-timeline__img--hidden">
-			<img src="img/` + pictureFileName + `" alt="Picture" style="transform: scale(7) rotateY(`+ rotateValue + `deg); z-index: 200;">
+			<img src="img/` + pictureFileName + `" alt="Picture" style="transform: scale(10) translateX(`+ translate + `%) rotateY(`+ rotateValue + `deg); z-index: 200;">
 		</div>`;
 	
 	// Conteudo card
@@ -198,9 +212,18 @@ function cargaInicial() {
 	});
 
 	setTimeout(BlocosAdicionados, 250); // Fazer a chamada de evento de mostrar os primeiros blocos 
+	setTimeout(AtualizarHeadersValores, 25);
+	
 }
 
-function BlocosAdicionados(){	// Di
+function AtualizarHeadersValores(){
+	document.getElementById("rotuloCasos").innerText = formatNumber(qtdCasos);
+	document.getElementById("rotuloMortes").innerText = formatNumber(qtdMortes);
+	document.getElementById("rotuloTotalCasos").innerText = formatNumber(totalCasos);
+	document.getElementById("rotuloTotalMortes").innerText = formatNumber(totalMortes);
+}
+
+function BlocosAdicionados(){
 	window.dispatchEvent(new Event('BlocosAdicionados'));
 }
 
@@ -219,17 +242,13 @@ function isInViewport() {
 			rect.right <= (window.innerWidth || document.documentElement.clientWidth)
 		) {
 			var idOrder = element.getAttribute("id");
-			var qtdCasos = buscarQtdeCasos(idOrder, dados);
-			var qtdMortes = buscarQtdeMortes(idOrder, dados);
+			qtdCasos = buscarQtdeCasos(idOrder, dados);
+			qtdMortes = buscarQtdeMortes(idOrder, dados);
 
 			qtdCasos = qtdCasos.toLocaleString('pt-BR');
 			
 			calculaBarraProgresso(qtdCasos, qtdMortes);
-			
-			document.getElementById("rotuloCasos").innerText = formatNumber(qtdCasos);
-			document.getElementById("rotuloMortes").innerText = formatNumber(qtdMortes);
-			document.getElementById("rotuloTotalCasos").innerText = formatNumber(totalCasos);
-			document.getElementById("rotuloTotalMortes").innerText = formatNumber(totalMortes);
+			AtualizarHeadersValores();
 		}
 	}
 }
